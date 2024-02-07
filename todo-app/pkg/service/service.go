@@ -2,21 +2,15 @@ package service
 
 import "github.com/spargapees/todo-app/todo-app/pkg/repository"
 
-type Authorization interface {
+type Service interface {
 }
 
-type TodoList interface {
+type service struct {
+	repos repository.Repository
 }
 
-type TodoItem interface {
-}
-
-type Service struct {
-	Authorization
-	TodoList
-	TodoItem
-}
-
-func NewService(repos *repository.Repository) *Service {
-	return &Service{}
+func NewService(repos repository.Repository) Service {
+	return &service{
+		repos: repos,
+	}
 }
