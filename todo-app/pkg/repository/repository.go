@@ -1,8 +1,12 @@
 package repository
 
-import "github.com/jmoiron/sqlx"
+import (
+	"github.com/jmoiron/sqlx"
+	todoapp "github.com/spargapees/todo-app/todo-app"
+)
 
 type Repository interface {
+	CreateUser(user todoapp.User) (int, error)
 }
 
 type repository struct {
