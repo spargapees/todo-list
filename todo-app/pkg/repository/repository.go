@@ -7,6 +7,7 @@ import (
 
 type Repository interface {
 	CreateUser(user todoapp.User) (int, error)
+	GetUser(username, password string) (todoapp.User, error)
 }
 
 type repository struct {
