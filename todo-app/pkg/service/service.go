@@ -15,13 +15,16 @@ const (
 
 type Service interface {
 	CreateUser(user todoapp.User) (int, error)
+
 	GenerateToken(username, password string) (string, error)
 	ParseToken(accessToken string) (int, error)
+
 	CreateList(userId int, list todoapp.TodoList) (int, error)
 	GetAllLists(userId int) ([]todoapp.TodoList, error)
 	GetListById(userId, listId int) (todoapp.TodoList, error)
+	DeleteListById(userid, listId int) error
+	UpdateList(userId, listId int, input todoapp.UpdateListInput) error
 }
-
 type service struct {
 	repos repository.Repository
 }
