@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/gin-gonic/gin"
 	todoapp "github.com/spargapees/todo-app/todo-app"
@@ -59,7 +58,7 @@ func (h *Handler) getListById(c *gin.Context) {
 		return
 	}
 
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := ValidateId(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
@@ -82,7 +81,7 @@ func (h *Handler) updateList(c *gin.Context) {
 		return
 	}
 
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := ValidateId(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
@@ -111,7 +110,7 @@ func (h *Handler) deleteList(c *gin.Context) {
 		return
 	}
 
-	id, err := strconv.Atoi(c.Param("id"))
+	id, err := ValidateId(c)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
