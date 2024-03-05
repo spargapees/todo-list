@@ -15,6 +15,10 @@ func (h *Handler) createItem(c *gin.Context) {
 
 	listId, err := ValidateId(c)
 
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
+		return
+	}
 	var input todoapp.TodoItem
 	if err := c.BindJSON(&input); err != nil {
 		newErrorResponse(c, http.StatusBadRequest, err.Error())
@@ -45,11 +49,37 @@ func (h *Handler) getAllItems(c *gin.Context) {
 
 	items, err := h.services.GetAllItems(userId, listId)
 
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
 	c.JSON(http.StatusOK, items)
 
 }
 
-func (h *Handler) getItemById(c *gin.Context) {}
+func (h *Handler) getItemById(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	id, err := ValidateId(c)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
+		return
+	}
+
+	item, err := h.services.GetItemById(userId, id)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, item)
+}
 
 func (h *Handler) updateItem(c *gin.Context) {}
 
