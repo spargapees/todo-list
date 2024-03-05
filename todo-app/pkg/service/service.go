@@ -22,13 +22,13 @@ type Service interface {
 	CreateList(userId int, list todoapp.TodoList) (int, error)
 	GetAllLists(userId int) ([]todoapp.TodoList, error)
 	GetListById(userId, listId int) (todoapp.TodoList, error)
-	DeleteListById(userid, listId int) error
+	DeleteList(userid, listId int) error
 	UpdateList(userId, listId int, input todoapp.UpdateListInput) error
 
 	CreateItem(userId, listId int, item todoapp.TodoItem) (int, error)
 	GetAllItems(userId, listId int) ([]todoapp.TodoItem, error)
 	GetItemById(userId, itemId int) (todoapp.TodoItem, error)
-	//DeleteItemById(userid, listId int) error
+	DeleteItem(userid, itemId int) error
 	//UpdateItem(userId, listId int, input todoapp.UpdateListInput) error
 }
 type service struct {

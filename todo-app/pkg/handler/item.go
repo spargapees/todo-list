@@ -83,4 +83,27 @@ func (h *Handler) getItemById(c *gin.Context) {
 
 func (h *Handler) updateItem(c *gin.Context) {}
 
-func (h *Handler) deleteItem(c *gin.Context) {}
+func (h *Handler) deleteItem(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	id, err := ValidateId(c)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
+		return
+	}
+
+	err = h.services.DeleteItem(userId, id)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{
+		Status: "ok",
+	})
+}

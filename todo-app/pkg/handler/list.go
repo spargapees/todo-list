@@ -117,7 +117,7 @@ func (h *Handler) deleteList(c *gin.Context) {
 		return
 	}
 
-	err = h.services.DeleteListById(userId, id)
+	err = h.services.DeleteList(userId, id)
 
 	if err != nil {
 		newErrorResponse(c, http.StatusInternalServerError, err.Error())
