@@ -29,7 +29,7 @@ type Service interface {
 	GetAllItems(userId, listId int) ([]todoapp.TodoItem, error)
 	GetItemById(userId, itemId int) (todoapp.TodoItem, error)
 	DeleteItem(userid, itemId int) error
-	//UpdateItem(userId, listId int, input todoapp.UpdateListInput) error
+	UpdateItem(userId, itemId int, input todoapp.UpdateItemInput) error
 }
 type service struct {
 	repos repository.Repository

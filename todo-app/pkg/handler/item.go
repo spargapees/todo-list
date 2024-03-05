@@ -81,7 +81,33 @@ func (h *Handler) getItemById(c *gin.Context) {
 	c.JSON(http.StatusOK, item)
 }
 
-func (h *Handler) updateItem(c *gin.Context) {}
+func (h *Handler) updateItem(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	id, err := ValidateId(c)
+
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
+		return
+	}
+
+	var input todoapp.UpdateItemInput
+
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err := h.services.UpdateItem(userId, id, input); err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, statusResponse{"ok"})
+}
 
 func (h *Handler) deleteItem(c *gin.Context) {
 	userId, err := getUserId(c)
