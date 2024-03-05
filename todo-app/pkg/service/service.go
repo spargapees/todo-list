@@ -24,6 +24,12 @@ type Service interface {
 	GetListById(userId, listId int) (todoapp.TodoList, error)
 	DeleteListById(userid, listId int) error
 	UpdateList(userId, listId int, input todoapp.UpdateListInput) error
+
+	CreateItem(userId, listId int, item todoapp.TodoItem) (int, error)
+	GetAllItems(userId, listId int) ([]todoapp.TodoItem, error)
+	//GetItemById(userId, listId int) (todoapp.TodoList, error)
+	//DeleteItemById(userid, listId int) error
+	//UpdateItem(userId, listId int, input todoapp.UpdateListInput) error
 }
 type service struct {
 	repos repository.Repository

@@ -1,10 +1,53 @@
 package handler
 
-import "github.com/gin-gonic/gin"
+import (
+	"net/http"
 
-func (h *Handler) createItem(c *gin.Context) {}
+	"github.com/gin-gonic/gin"
+	todoapp "github.com/spargapees/todo-app/todo-app"
+)
 
-func (h *Handler) getAllItems(c *gin.Context) {}
+func (h *Handler) createItem(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	listId, err := ValidateId(c)
+
+	var input todoapp.TodoItem
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+	id, err := h.services.CreateItem(userId, listId, input)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"id": id,
+	})
+}
+
+func (h *Handler) getAllItems(c *gin.Context) {
+	userId, err := getUserId(c)
+	if err != nil {
+		return
+	}
+
+	listId, err := ValidateId(c)
+	if err != nil {
+		newErrorResponse(c, http.StatusBadRequest, "invalid id parameter")
+		return
+	}
+
+	items, err := h.services.GetAllItems(userId, listId)
+
+	c.JSON(http.StatusOK, items)
+
+}
 
 func (h *Handler) getItemById(c *gin.Context) {}
 
